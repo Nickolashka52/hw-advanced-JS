@@ -29,52 +29,6 @@
   const addCommentBtn = document.getElementById('add-comment-btn');
   const commentsList = document.getElementById('comments-list');
 
-  addCommentBtn.addEventListener('click', () => {
-    const name = nameInput.value.trim();
-    const comment = commentInput.value.trim();
-
-    if (name && comment) {
-      const now = new Date();
-      const options = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false
-      };
-      const dateString = now.toLocaleString('ru-RU', options).replace(',', '');
-
-      const newComment = `
-      <li class="comment">
-        <div class="comment-header">
-          <div>${name}</div>
-          <div>${dateString}</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            ${comment}
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">0</span>
-            <button class="like-button"></button>
-          </div>
-        </div>
-      </li>
-        `;
-
-      commentsList.innerHTML += newComment;
-      nameInput.value = '';
-      commentInput.value = '';
-    }
-
-    else {
-      alert('Пожалуйста, заполните все поля.');
-    }
-  })
-
   const comments = [
     {
       id: 1,
@@ -124,7 +78,43 @@
     handleLikes();
   }
 
-  renderComments();
+  addCommentBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+
+    if (!name || !comment) {
+      alert('Пожалуйста, заполните все поля.');
+      return;
+    }
+
+    const now = new Date();
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false
+    };
+    const dateString = now.toLocaleString('ru-RU', options).replace(',', '');
+
+    const newComment = {
+      id: comments.length + 1,
+      name,
+      text: comment,
+      date: dateString,
+      likeCount: 0,
+      liked: false
+    }
+
+    comments.push(newComment);
+    console.log(comments);
+    renderComments();
+
+    nameInput.value = '';
+    commentInput.value = '';
+  }
+  )
 
   function handleLikes() {
     const likeButtons = document.querySelectorAll(".like-button");
@@ -146,6 +136,7 @@
     })
   }
 
+  renderComments();
 </script>
 
 </html>
