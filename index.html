@@ -34,7 +34,7 @@
       id: 1,
       name: "Глеб Фокин",
       date: "12.02.22 12:18",
-      text: "Это будет первый комментарий на этой сьранице",
+      text: "Это будет первый комментарий на этой странице",
       likeCount: 3,
       liked: true
     },
@@ -56,7 +56,7 @@
       const newComment = `
       <li class="comment">
         <div class="comment-header">
-          <div>${comment.name}</div>
+          <div class="comment-name">${comment.name}</div>
           <div>${comment.date}</div>
         </div>
         <div class="comment-body">
@@ -120,6 +120,7 @@
     const likeButtons = document.querySelectorAll(".like-button");
     likeButtons.forEach((likeButton) => {
       likeButton.addEventListener("click", () => {
+        event.stopPropagation();
         const id = likeButton.dataset.id;
         const comment = comments.find((c) => c.id === +id);
 
@@ -137,6 +138,19 @@
   }
 
   renderComments();
+
+  document.querySelectorAll('.comment').forEach(comment => {
+    comment.addEventListener('click', () => {
+      const author = document.querySelector('.comment-name').innerText;
+      const text = document.querySelector('.comment-text').innerText;
+      const addNameInput = document.getElementById('name-input');
+      const addCommentTextInput = document.getElementById('comment-input');
+
+      addNameInput.value = `${author}`;
+      addCommentTextInput.value = `${addCommentTextInput}`;
+      addCommentTextInput.focus();
+    });
+  })
 </script>
 
 </html>
