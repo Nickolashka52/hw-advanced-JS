@@ -54,7 +54,7 @@
     const commentHtml = comments.map(comment => {
       const classString = `like-button ${comment.liked ? "-active-like" : ""}`
       const newComment = `
-      <li class="comment">
+      <li data-id="${comment.id}" class="comment">
         <div class="comment-header">
           <div class="comment-name">${comment.name}</div>
           <div>${comment.date}</div>
@@ -76,11 +76,12 @@
     }).join("");
     commentsList.innerHTML = commentHtml;
     handleLikes();
+    addInitReplyListeners();
   }
 
   addCommentBtn.addEventListener('click', () => {
-    const name = nameInput.value.trim();
-    const comment = commentInput.value.trim();
+    const name = nameInput.value.trim().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+    const comment = commentInput.value.trim().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
     if (!name || !comment) {
       alert('Пожалуйста, заполните все поля.');
@@ -131,7 +132,6 @@
           comment.liked = true;
           comment.likeCount += 1;
         }
-
         renderComments();
       })
     })
@@ -139,18 +139,18 @@
 
   renderComments();
 
-  document.querySelectorAll('.comment').forEach(comment => {
-    comment.addEventListener('click', () => {
-      const author = document.querySelector('.comment-name').innerText;
-      const text = document.querySelector('.comment-text').innerText;
-      const addNameInput = document.getElementById('name-input');
-      const addCommentTextInput = document.getElementById('comment-input');
+  function addInitReplyListeners() {
+    document.querySelectorAll('.comment').forEach(comment => {
+      comment.addEventListener('click', () => {
+        const id = comment.dataset.id;
+        const currentComment = comments.find((c) => c.id === +id);
+        const addCommentTextInput = document.getElementById('comment-input');
+        addCommentTextInput.value = `${currentComment.name} > ${currentComment.text}`;
+        addCommentTextInput.focus();
+      });
+    })
+  }
 
-      addNameInput.value = `${author}`;
-      addCommentTextInput.value = `${addCommentTextInput}`;
-      addCommentTextInput.focus();
-    });
-  })
 </script>
 
 </html>
