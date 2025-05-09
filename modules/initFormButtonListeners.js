@@ -17,19 +17,6 @@ export function initFormButtonListeners() {
             return;
         }
 
-        const now = new Date();
-        const options = {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            hour12: false,
-        };
-        const dateString = now
-            .toLocaleString("ru-RU", options)
-            .replace(",", "");
-
         const newComment = {
             name,
             text: comment,
