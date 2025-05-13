@@ -15,7 +15,7 @@ export const renderComments = () => {
       <li data-id="${comment.id}" class="comment">
         <div class="comment-header">
           <div class="comment-name">${comment.author.name}</div>
-          <div>${comment.date}</div>
+          <div>${new Date(comment.date).toLocaleDateString()}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
