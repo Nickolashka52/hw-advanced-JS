@@ -1,11 +1,11 @@
-import { getComments } from "./api.js";
-import { updateComments } from "./comments.js";
-import { renderComments } from "./renderComments.js";
+import { fetchAndRenderComments } from "./fetchAndRenderComments.js";
 import { sanitizeInput } from "./sanitizeInput.js";
 
 const nameInput = document.getElementById("name-input");
 const commentInput = document.getElementById("comment-input");
 const addCommentBtn = document.getElementById("add-comment-btn");
+const commentForm = document.getElementById("comment-form");
+const addCommentLoader = document.getElementById("add-comment-loader");
 
 export function initFormButtonListeners() {
     addCommentBtn.addEventListener("click", () => {
@@ -22,22 +22,21 @@ export function initFormButtonListeners() {
             text: comment,
         };
 
+        commentForm.style.display = "none";
+        addCommentLoader.style.display = "block";
+
         fetch("https://wedev-api.sky.pro/api/v1/nickolay-led/comments", {
             method: "POST",
             body: JSON.stringify(newComment),
         })
             .then(() => {
-                return getComments();
+                return fetchAndRenderComments();
             })
-            .then((data) => {
-                updateComments(data.comments);
-                renderComments();
+            .then(() => {
+                addCommentLoader.style.display = "none";
+                commentForm.style.display = "block";
+                nameInput.value = "";
+                commentInput.value = "";
             });
-
-        //comments.push(newComment);
-        //renderComments();
-
-        nameInput.value = "";
-        commentInput.value = "";
     });
 }
