@@ -1,6 +1,6 @@
-import { firstFetchAndRenderComments } from "./modules/firstFetchAndRenderComments.js";
+import { fetchAndRenderComments } from "./modules/fetchAndRenderComments.js";
 import { initFormButtonListeners } from "./modules/initFormButtonListeners.js";
 
-firstFetchAndRenderComments();
+fetchAndRenderComments();
 
 initFormButtonListeners();

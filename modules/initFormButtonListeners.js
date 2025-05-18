@@ -1,3 +1,4 @@
+import { postComments } from "./api.js";
 import { fetchAndRenderComments } from "./fetchAndRenderComments.js";
 import { sanitizeInput } from "./sanitizeInput.js";
 
@@ -25,16 +26,13 @@ export function initFormButtonListeners() {
         commentForm.style.display = "none";
         addCommentLoader.style.display = "block";
 
-        fetch("https://wedev-api.sky.pro/api/v1/nickolay-led/comments", {
-            method: "POST",
-            body: JSON.stringify(newComment),
-        })
+        postComments(newComment)
             .then(() => {
                 return fetchAndRenderComments();
             })
             .then(() => {
+                commentForm.style.display = "flex";
                 addCommentLoader.style.display = "none";
-                commentForm.style.display = "block";
                 nameInput.value = "";
                 commentInput.value = "";
             });
