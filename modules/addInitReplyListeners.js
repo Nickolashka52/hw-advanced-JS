@@ -7,7 +7,7 @@ export const addInitReplyListeners = () => {
             const currentComment = comments.find((c) => c.id === +id);
             const addCommentTextInput =
                 document.getElementById("comment-input");
-            addCommentTextInput.value = `${currentComment.author.name} > ${currentComment.text}`;
+            addCommentTextInput.value = `${currentComment.name} > ${currentComment.text}`;
             addCommentTextInput.focus();
         });
     });
