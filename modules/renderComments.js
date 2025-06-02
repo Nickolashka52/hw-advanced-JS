@@ -1,12 +1,14 @@
 import { comments } from "./comments.js";
+import { name, token } from "./api.js";
 import { handleLikes } from "./handleLikes.js";
 import { addInitReplyListeners } from "./addInitReplyListeners.js";
+import { renderLogin } from "./renderLogin.js";
+import { initFormButtonListeners } from "./initFormButtonListeners.js";
 
 export const renderComments = () => {
-    const commentsList = document.getElementById("comments-list");
-    commentsList.innerHTML = "";
+    const container = document.querySelector(".container");
 
-    const commentHtml = comments
+    const commentsHtml = comments
         .map((comment) => {
             const classString = `like-button ${
                 comment.isLiked ? "-active-like" : ""
@@ -29,11 +31,58 @@ export const renderComments = () => {
           </div>
         </div>
       </li>
-        `;
+      `;
             return newComment;
         })
         .join("");
-    commentsList.innerHTML = commentHtml;
-    handleLikes();
-    addInitReplyListeners();
+
+    const addCommentsHtml = `
+            <div id="comment-form" class="add-form">
+                <input
+                    type="text"
+                    class="add-form-name"
+                    placeholder="Введите ваше имя"
+                    readonly
+                    value="${name}"
+                    id="name-input"
+                />
+                <textarea
+                    type="textarea"
+                    class="add-form-text"
+                    placeholder="Введите ваш коментарий"
+                    rows="4"
+                    id="comment-input"
+                ></textarea>
+                <div class="add-form-row">
+                    <button class="add-form-button" id="add-comment-btn">
+                        Написать
+                    </button>
+                </div>
+            </div>
+            <div
+                id="add-comment-loader"
+                style="display: none; margin-top: 20px"
+            >
+                Комментарий добавляется...
+            </div>
+    `;
+
+    const linkToLoginText = `<p>чтобы отправить комментарий, <span class="link-login">войдите</span></p>`;
+
+    const baseHtml = `
+      <ul class="comments" id="comments-list">${commentsHtml}</ul>
+      ${token ? addCommentsHtml : linkToLoginText}
+    `;
+
+    container.innerHTML = baseHtml;
+
+    if (token) {
+        handleLikes();
+        addInitReplyListeners();
+        initFormButtonListeners();
+    } else {
+        document.querySelector(".link-login").addEventListener("click", () => {
+            renderLogin();
+        });
+    }
 };
