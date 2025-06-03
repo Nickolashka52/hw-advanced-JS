@@ -3,17 +3,17 @@ import { updateComments } from "./comments.js";
 import { renderComments } from "./renderComments.js";
 import { sanitizeInput } from "./sanitizeInput.js";
 
-const nameInput = document.getElementById("name-input");
-const commentInput = document.getElementById("comment-input");
-const addCommentBtn = document.getElementById("add-comment-btn");
-const commentForm = document.getElementById("comment-form");
-const addCommentLoader = document.getElementById("add-comment-loader");
-
 export function initFormButtonListeners() {
+    const addCommentBtn = document.getElementById("add-comment-btn");
     addCommentBtn.addEventListener("click", handlePostClick);
 }
 
 const handlePostClick = () => {
+    const nameInput = document.getElementById("name-input");
+    const commentInput = document.getElementById("comment-input");
+    const commentForm = document.getElementById("comment-form");
+    const addCommentLoader = document.getElementById("add-comment-loader");
+
     const name = sanitizeInput(nameInput.value);
     const comment = sanitizeInput(commentInput.value);
 
